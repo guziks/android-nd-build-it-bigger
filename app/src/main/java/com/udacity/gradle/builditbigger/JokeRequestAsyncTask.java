@@ -1,25 +1,28 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.util.Pair;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
+import com.udacity.gradle.jokeviewer.JokeActivity;
 
 import java.io.IOException;
 
-class JokeRequestAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+class JokeRequestAsyncTask extends AsyncTask<Context, Void, String> {
+
+    private static final String TAG = JokeRequestAsyncTask.class.getSimpleName();
 
     private static MyApi mApiService = null;
     private Context mContext;
 
     @Override
-    protected String doInBackground(Pair<Context, String>... params) {
+    protected String doInBackground(Context... params) {
         if(mApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -41,18 +44,24 @@ class JokeRequestAsyncTask extends AsyncTask<Pair<Context, String>, Void, String
             mApiService = builder.build();
         }
 
-        mContext = params[0].first;
-        String name = params[0].second;
+        mContext = params[0];
+
+        String joke = null;
 
         try {
-            return mApiService.tellJoke().execute().getText();
+            joke = mApiService.tellJoke().execute().getText();
+            Log.i(TAG, "Requested joke: " + joke);
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e(TAG, e.getMessage());
         }
+
+        return joke;
     }
 
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(mContext, JokeActivity.class);
+        intent.putExtra(JokeActivity.EXTRA_jOKE, result);
+        mContext.startActivity(intent);
     }
 }

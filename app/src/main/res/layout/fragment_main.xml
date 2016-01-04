@@ -18,12 +18,6 @@
         android:text="@string/button_text"
         android:textAppearance="?android:textAppearanceLarge"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="requestJoke"
-        android:text="Request Joke"/>
-
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
