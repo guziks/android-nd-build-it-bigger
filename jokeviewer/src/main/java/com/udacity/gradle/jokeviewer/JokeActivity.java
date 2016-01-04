@@ -9,7 +9,7 @@ public class JokeActivity extends AppCompatActivity {
 
     private static final String TAG = JokeActivity.class.getSimpleName();
 
-    public static final String EXTRA_jOKE = "extra_joke";
+    public static final String EXTRA_jOKE = "jokeviewer.EXTRA_JOKE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
