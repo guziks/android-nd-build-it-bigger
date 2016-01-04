@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Joke Viewer</string>
+    <string name="log_joke_received">"Joke received: %s"</string>
+    <string name="log_no_joke_received">No joke received</string>
+</resources>
