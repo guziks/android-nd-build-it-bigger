@@ -1,9 +1,11 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.Pair;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -14,15 +16,16 @@ import com.udacity.gradle.jokeviewer.JokeActivity;
 
 import java.io.IOException;
 
-class JokeRequestAsyncTask extends AsyncTask<Context, Void, String> {
+class JokeRequestAsyncTask extends AsyncTask<Pair<Context, ProgressDialog>, Void, String> {
 
     private static final String TAG = JokeRequestAsyncTask.class.getSimpleName();
 
     private static MyApi mApiService = null;
     private Context mContext;
+    private ProgressDialog mProgress;
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected String doInBackground(Pair<Context, ProgressDialog>... params) {
         if(mApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -44,9 +47,10 @@ class JokeRequestAsyncTask extends AsyncTask<Context, Void, String> {
             mApiService = builder.build();
         }
 
-        mContext = params[0];
+        mContext = params[0].first;
+        mProgress = params[0].second;
 
-        String joke = null;
+        String joke = mContext.getString(R.string.default_joke);
 
         try {
             joke = mApiService.tellJoke().execute().getText();
@@ -60,6 +64,7 @@ class JokeRequestAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        mProgress.dismiss();
         Intent intent = new Intent(mContext, JokeActivity.class);
         intent.putExtra(JokeActivity.EXTRA_jOKE, result);
         mContext.startActivity(intent);
