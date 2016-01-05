@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke(View view){
         mProgress = ProgressDialog.show(this, getString(R.string.progress_dialog_title), getString(R.string.progress_dialog_message), true);
-        mRequest = new JokeRequestAsyncTask().execute(new Pair<Context, ProgressDialog>(this, mProgress));
+        mRequest = new JokeRequestAsyncTask().execute(new Pair<Context, DialogInterface>(this, mProgress));
     }
 }

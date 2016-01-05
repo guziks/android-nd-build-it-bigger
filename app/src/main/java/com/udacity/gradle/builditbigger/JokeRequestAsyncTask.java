@@ -1,7 +1,7 @@
 package com.udacity.gradle.builditbigger;
 
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,17 +16,17 @@ import com.udacity.gradle.jokeviewer.JokeActivity;
 
 import java.io.IOException;
 
-class JokeRequestAsyncTask extends AsyncTask<Pair<Context, ProgressDialog>, Void, String> {
+class JokeRequestAsyncTask extends AsyncTask<Pair<Context, DialogInterface>, Void, String> {
 
     private static final String TAG = JokeRequestAsyncTask.class.getSimpleName();
 
     private static MyApi mApiService = null;
     private Context mContext;
-    private ProgressDialog mProgress;
+    private DialogInterface mProgress;
 
     @Override
-    protected String doInBackground(Pair<Context, ProgressDialog>... params) {
-        if(mApiService == null) {  // Only do this once
+    protected String doInBackground(Pair<Context, DialogInterface>... params) {
+        if (mApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     // options for running against local devappserver
@@ -50,7 +50,7 @@ class JokeRequestAsyncTask extends AsyncTask<Pair<Context, ProgressDialog>, Void
         mContext = params[0].first;
         mProgress = params[0].second;
 
-        String joke = mContext.getString(R.string.default_joke);
+        String joke = null;
 
         try {
             joke = mApiService.tellJoke().execute().getText();
@@ -64,6 +64,9 @@ class JokeRequestAsyncTask extends AsyncTask<Pair<Context, ProgressDialog>, Void
 
     @Override
     protected void onPostExecute(String result) {
+        if (result == null) {
+            result = mContext.getString(R.string.default_joke);
+        }
         mProgress.dismiss();
         Intent intent = new Intent(mContext, JokeActivity.class);
         intent.putExtra(JokeActivity.EXTRA_jOKE, result);
