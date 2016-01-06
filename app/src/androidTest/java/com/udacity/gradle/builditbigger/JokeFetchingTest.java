@@ -1,31 +1,22 @@
 package com.udacity.gradle.builditbigger;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.ActivityTestCase;
-import android.test.ApplicationTestCase;
-import android.test.IsolatedContext;
-import android.test.mock.MockContext;
 import android.test.mock.MockDialogInterface;
 import android.util.Pair;
-
-import junit.framework.TestCase;
 
 import java.util.concurrent.ExecutionException;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class JokeFetchingTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     Activity mMActivity;
 
-    public ApplicationTest() {
+    public JokeFetchingTest() {
         super(MainActivity.class);
     }
 
@@ -41,17 +32,20 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
         String joke = null;
         try {
             joke = new JokeRequestAsyncTask().execute(new Pair<Context, DialogInterface>(mockContext, mockDialog)).get();
-        } catch (InterruptedException|ExecutionException e) {}
-        assertNotNull("No network connection or server does not response", joke);
+        } catch (InterruptedException | ExecutionException e) {
+        }
+        assertNotNull("Server does not response", joke);
         assertNotSame("Requested joke should not be empty", joke, "");
     }
 
     class MockDialog extends MockDialogInterface {
 
         @Override
-        public void dismiss() {}
+        public void dismiss() {
+        }
 
         @Override
-        public void cancel() {}
+        public void cancel() {
+        }
     }
 }
