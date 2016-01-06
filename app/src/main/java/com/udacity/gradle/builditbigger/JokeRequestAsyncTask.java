@@ -31,7 +31,7 @@ class JokeRequestAsyncTask extends AsyncTask<Pair<Context, DialogInterface>, Voi
 
         if (mApiService == null) {
             MyApi.Builder builder;
-            if (BuildConfig.FLAVOR.equals("local")) {
+            if (BuildConfig.LOCAL) {
                 builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
                         // options for running against local devappserver
