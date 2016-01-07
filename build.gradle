@@ -17,3 +17,25 @@ allprojects {
         jcenter()
     }
 }
+
+// backend does not stop if test fails
+//task autoCheck {
+//    group 'verification'
+//    mustRunAfter ':backend:appengineRun'
+//    dependsOn = [':backend:appengineRun', ':app:connectedFreeLocalDebugAndroidTest']
+//    finalizedBy ':backend:appengineStop'
+//}
+
+task preAutoCheck {
+    dependsOn ':backend:appengineRun'
+    finalizedBy 'postAutoCheck'
+}
+task postAutoCheck {
+    dependsOn ':backend:appengineStop'
+    mustRunAfter 'autoCheck'
+}
+task autoCheck {
+    group = 'end-to-end'
+    dependsOn 'preAutoCheck'
+    dependsOn ':app:connectedFreeLocalDebugAndroidTest'
+}
