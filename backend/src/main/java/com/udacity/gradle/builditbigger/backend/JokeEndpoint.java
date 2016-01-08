@@ -9,6 +9,7 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.udacity.gradle.joker.Joker;
 
 @Api(
   name = "myApi",
@@ -24,8 +25,8 @@ public class JokeEndpoint {
     @ApiMethod(name = "tellJoke")
     public JokeBean tellJoke() {
         JokeBean response = new JokeBean();
-        response.setText("Ho Ho Ho");
-
+        Joker joker = new Joker();
+        response.setText(joker.tell());
         return response;
     }
 }
