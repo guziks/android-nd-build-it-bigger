@@ -10,10 +10,13 @@
     tools:context=".MainActivityFragment">
 
     <Button
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
         android:onClick="tellJoke"
+        android:padding="24dp"
         android:text="@string/button_text"
         android:textAppearance="?android:textAppearanceLarge"/>
 
