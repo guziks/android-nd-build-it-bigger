@@ -9,10 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements JokeCounter {
 
     private ProgressDialog mProgress;
     private AsyncTask mRequest;
+    private int mJokeCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view){
+        mJokeCounter++;
         mProgress = ProgressDialog.show(this, getString(R.string.progress_dialog_title), getString(R.string.progress_dialog_message), true);
         mRequest = new JokeRequestAsyncTask().execute(new Pair<Context, DialogInterface>(this, mProgress));
     }
+
+    public int getCount() {
+        return mJokeCounter;
+    }
+}
+
+interface JokeCounter {
+    int getCount();
 }
